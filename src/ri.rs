@@ -431,7 +431,27 @@ impl RIFull<f64> {
                 &mut self.data, &self_size, range_x,range_y, i_z, copy_mod
             )
     }
+
+    pub fn formated_output(&self, n_len: usize) {
+        let chunk_size = self.size[0]*self.size[1];
+        &self.data.chunks_exact(chunk_size)
+                .enumerate().for_each(|(idx,c)| { let mat = MatrixFull::from_vec([self.size[0],self.size[1]], c.to_vec()).unwrap();
+                                println!("{}",idx);
+                                mat.formated_output(n_len, "full");
+                                });
+    }
+    
+    pub fn formated_output_e(&self, n_len: usize) {
+        let chunk_size = self.size[0]*self.size[1];
+        &self.data.chunks_exact(chunk_size)
+                .enumerate().for_each(|(idx,c)| { let mat = MatrixFull::from_vec([self.size[0],self.size[1]], c.to_vec()).unwrap();
+                                println!("{}",idx);
+                                mat.formated_output_e(n_len, "full");
+                                });
+    }
+
 }
+
 
 #[test]
 fn test_transpose_ijk(){
@@ -473,4 +493,11 @@ fn test_transpose(){
 
 
 
+}
+
+#[test]
+fn test_formated_output(){
+    let data_b = vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0];
+    let b = RIFull::from_vec([3,2,2], data_b).unwrap();
+    b.formated_output_e(10)
 }
